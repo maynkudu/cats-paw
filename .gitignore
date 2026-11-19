@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+reference/
+evidence/
+*.har
+*.trace

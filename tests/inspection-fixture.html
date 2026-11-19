@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Cat's Paw inspection fixture</title>
+<style>
+  #target { width: 240px; padding: 17px; display: grid; gap: 11px; font: 18px/1.5 sans-serif; }
+  #target::before { content: "fixture"; color: rgb(120, 30, 60); }
+  button { border: 0; padding: 12px; background: #ddd; color: #222; }
+  button:focus-visible { outline: 2px solid blue; }
+  .moving { width: 20px; height: 20px; background: #456; }
+</style>
+<main id="target">
+  <button type="button" id="toggle" aria-pressed="false">Toggle motion</button>
+  <input type="password" value="fixture-secret-must-not-export" aria-label="Fixture secret">
+  <div id="shadow-host"></div>
+  <div class="moving"></div>
+</main>
+<script>
+  const shadow = document.querySelector('#shadow-host').attachShadow({mode: 'open'});
+  shadow.innerHTML = '<span style="font-size:13px">Shadow text</span>';
+  const moving = document.querySelector('.moving');
+  const animation = moving.animate([{transform: 'translateX(0px)'}, {transform: 'translateX(40px)'}],
+    {duration: 400, fill: 'both', easing: 'linear'});
+  animation.pause();
+  animation.currentTime = 200;
+  document.querySelector('#toggle').addEventListener('click', event => {
+    const active = event.currentTarget.getAttribute('aria-pressed') !== 'true';
+    event.currentTarget.setAttribute('aria-pressed', String(active));
+    animation.currentTime = active ? 400 : 200;
+  });
+  globalThis.CATS_PAW_OPTIONS = {selector: '#target', maxNodes: 20};
+</script>
+</html>
